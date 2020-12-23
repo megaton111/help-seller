@@ -4,6 +4,7 @@ import React, { useState, useEffect, useReducer } from 'react';
 import styled, { css } from 'styled-components' ;
 import Loader from 'react-loader-spinner';
 
+/* styled-components로 스타일 관리 - 하나의 js파일 안에서 관리하기 위함 */
 const FormBlock = styled.form`` ; 
 const InputBlock = styled.div`
   display:flex ; 
@@ -63,7 +64,6 @@ const TrackListItem = styled.div`
 
 
 const Reducer = ( state, action ) => {
-  console.log( action.type , ' : ', { state, action }) ; 
   switch( action.type ) {
     case 'LOADING' : return { ...state, loading : true, data : 'Loading', trackData : [], error : null } ; 
     case 'SUCCESS' : return { ...state, loading : false , data : 'Success', trackData : action.trackData, error : null } ; 

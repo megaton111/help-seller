@@ -9,35 +9,13 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 const https = require( 'https' ) ; 
-// console.log( "https: ", https ) ; 
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// API calls
-app.get('/api/hello', (req, res) => {
-  res.send({ express: 'Hello From Express' });
-});
-
-app.post('/api/world', (req, res) => {
-  console.log(req.body);
-  res.send(
-    `I received your POST request. This is what you sent me: ${req.body.post}`,
-  );
-});
-
 const checkPass = async ( name, number ) => {
-  console.log( 'name : ', name ) ;
-  console.log( 'number : ', number ) ;
-
   const url = `https://unipass.customs.go.kr:38010/ext/rest/persEcmQry/retrievePersEcm?crkyCn=o220p260j056x276q000c050u0&persEcm=${number}&pltxNm=${name}` ;
-  const browser = await puppeteer.launch({
-    'args' : [ 
-      '--no-sandbox' 
-    ]
-  });
+  const browser = await puppeteer.launch({ 'args' : [ '--no-sandbox' ] });
   const page = await browser.newPage();
-
   let pageOption = {
       waitUntil: 'networkidle2',
       timeout : 20000
@@ -45,10 +23,8 @@ const checkPass = async ( name, number ) => {
 
   let response = await page.goto( url, pageOption ) ;
   let html = await response.text() ;
-
   const $ = cheerio.load( html ) ;
   const result = $('tCnt').text() ;
-
   await browser.close();
   return result ; 
 } ; 
@@ -56,6 +32,7 @@ const checkPass = async ( name, number ) => {
 app.post( '/api/unipass', async ( req, res ) => {
   let { name, number } = req.body ; 
   const result = await checkPass( name, number ) ; 
+  /* result가 1을 받으면 일치 아니면 불일치 */
   const text = result == '1' ? '일치' : '불일치' ; 
   res.send( text );
 }) ;

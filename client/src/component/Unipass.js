@@ -1,8 +1,9 @@
 import Axios from 'axios';
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import Loader from 'react-loader-spinner';
 import styled, { css } from 'styled-components' ;
 
+/* styled-components로 스타일 관리 - 하나의 js파일 안에서 관리하기 위함 */
 const FormBlock = styled.form`` ; 
 const InputBlock = styled.div`
   display:flex ; 
@@ -62,18 +63,14 @@ const getUnipass = async ( name, number ) => {
     name : name ,
     number : number 
   }) ; 
-  console.log( 'getUnipass :', response.data ) ;
   return response.data ; 
-}
+} // end of getUnipass
 
 const Unipass = _ => {
 
   const 
   [ name, setName ] = useState( '' ) ,
   [ number, setNumber ] = useState( '' ) ,
-
-  [ info , setInfo ] = useState({ name : '' , number : '' }) ,
-
   [ state, dispatch ] = useReducer( Reducer, {
     loading : false , 
     data : null , 
@@ -81,9 +78,10 @@ const Unipass = _ => {
   }) ,
   
   onSubmit = e => {
+    console.log({ name, number }) ;
     e.preventDefault() ; 
     fetchUnipass() ; 
-  } ,
+  } , // end of onSubmit
 
   fetchUnipass = async _ => {
 
@@ -99,18 +97,13 @@ const Unipass = _ => {
       default : 
         try {
           const data = await getUnipass( name, number ) ;
-          console.log({ data } ) ; 
           dispatch({ type : 'SUCCESS' , data : data }) ;
         } catch ( e ) {
           dispatch({ type : 'ERROR' , error : e }) ;
         }
     }
-  }
+  } // end of fetchUnipass
   ;
-
-  /* 
-  P190007126387 
-  */
 
   const { loading, data : check , error } = state ; 
   
