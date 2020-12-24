@@ -62,7 +62,6 @@ const TrackListItem = styled.div`
 ` ;
 // https://tracker.delivery/guide
 
-
 const Reducer = ( state, action ) => {
   switch( action.type ) {
     case 'LOADING' : return { ...state, loading : true, data : 'Loading', trackData : [], error : null } ; 
@@ -71,17 +70,17 @@ const Reducer = ( state, action ) => {
     case 'ERROR' : return { ...state, loading : false , data : 'Error!' , trackData : [], error : true } ; 
     default : return state ; 
   }
-} ;
+} ; // end of Reducer
 
 const getTrack = async ( code , number ) => {
   const response = await Axios.get( `https://apis.tracker.delivery/carriers/${code}/tracks/${number}` ) ; 
   return response.data ; 
-} ;
+} ; // end of getTrack
 
 const getCompany = async () => {
   const response = await Axios.get( 'https://apis.tracker.delivery/carriers' ) ; 
   return response.data ; 
-}
+} ; // end of getCompany
 
 const Tracking = _ => {
   const 
